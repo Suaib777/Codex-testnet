@@ -18,6 +18,19 @@ jobs:
           echo "Run at $(date '+%Y-%m-%d %H:%M:%S')" >> activity.log
 
       - name: Commit changes
+- name: Commit changes
+  run: |
+    git config --global user.name "Suaib777"
+    git config --global user.email "suaibmabayo77@gmail.com"
+
+    git add .
+
+    if git diff --cached --quiet; then
+      echo "No changes to commit"
+      exit 0
+    fi
+
+    git commit -m "chore: daily auto update $(date '+%Y-%m-%d')"
         run: |
           git config --global user.name "Suaib777"
           git config --global user.email "suaibmabayo77@gmail.com"

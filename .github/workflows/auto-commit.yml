@@ -2,7 +2,7 @@ name: Auto Commit Bot
 
 on:
   schedule:
-    - cron: "0 1 * * *"   # Jam 08 pagi WIB
+    - cron: "0 1 * * *"   # 08:00 WIB
   workflow_dispatch:
 
 jobs:
@@ -12,31 +12,29 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Setup Git
+        run: |
+          git config --global user.name "Suaib777"
+          git config --global user.email "suaibmabayo77@gmail.com"
 
       - name: Update activity log
         run: |
           echo "Run at $(date '+%Y-%m-%d %H:%M:%S')" >> activity.log
 
       - name: Commit changes
-- name: Commit changes
-  run: |
-    git config --global user.name "Suaib777"
-    git config --global user.email "suaibmabayo77@gmail.com"
-
-    git add .
-
-    if git diff --cached --quiet; then
-      echo "No changes to commit"
-      exit 0
-    fi
-
-    git commit -m "chore: daily auto update $(date '+%Y-%m-%d')"
         run: |
-          git config --global user.name "Suaib777"
-          git config --global user.email "suaibmabayo77@gmail.com"
-
           git add .
-          git commit -m "chore: daily auto update $(date '+%Y-%m-%d')"
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          DATE=$(date '+%Y-%m-%d')
+          git commit -m "chore: daily auto update $DATE"
 
       - name: Push changes
         run: |
